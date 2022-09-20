@@ -34,8 +34,8 @@ class Acciones:
                 self.proximasAcciones(login)
 
         except Exception as e:
-            #print(type(e))
-            #print(type(e).__name__)
+            print(type(e))
+            print(type(e).__name__)
             print(f"Login incorrecto!!")
 
     def proximasAcciones(self, usuario):
@@ -57,7 +57,7 @@ class Acciones:
             hazEl.mostrar(usuario)
             self.proximasAcciones(usuario)
         elif accion == "eliminar":
-            print("Vamos a eliminar")
+            hazEl.borrar(usuario)
             self.proximasAcciones(usuario)
         elif accion == "salir":
             print(f"ok {usuario[1]} hasta pronto.")

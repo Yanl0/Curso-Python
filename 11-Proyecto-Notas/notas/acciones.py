@@ -1,3 +1,4 @@
+from statistics import mode
 import notas.nota as modelo
 
 class Acciones:
@@ -20,10 +21,22 @@ class Acciones:
         nota = modelo.Nota(usuario[0], "", "")
         notas = nota.listar()
 
-        print(notas)
+        #print(notas)
 
         for nota in notas:
             print("================================")
             print(nota[2])
             print(nota[3])
+            print(f"Nota realizada el: {nota[4]}")
             print("================================")
+    
+    def borrar(self, usuario):
+        print(f"\n Hola {usuario[1]}!! Vamos a borrar notas.")
+        titulo = input("Introduce el titulo de la nota que desea borrar: ")
+        nota = modelo.Nota(usuario[0], titulo, "")
+        eliminar = nota.eliminar()
+
+        if eliminar[0] >= 1:
+            print(f"Hemos eliminado la nota: {nota.titulo}")
+        else:
+            print("No se ha podido eliminar la nota...")
