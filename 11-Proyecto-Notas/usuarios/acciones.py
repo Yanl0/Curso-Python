@@ -51,11 +51,10 @@ class Acciones:
         hazEl = notas.acciones.Acciones()
 
         if accion == "crear":
-            print("Vamos a crear")
             hazEl.crear(usuario)
             self.proximasAcciones(usuario)
         elif accion == "mostrar":
-            print("Vamos a mostrar")
+            hazEl.mostrar(usuario)
             self.proximasAcciones(usuario)
         elif accion == "eliminar":
             print("Vamos a eliminar")
