@@ -1,15 +1,11 @@
-import mysql.connector
 import datetime
+import hashlib
+from unittest import result
+import usuarios.conexion as conexion
 
-database = mysql.connector.connect(
-    host="localhost",
-    user="root",
-    passwd="",
-    database="master_python",
-    port=3306
-)
-
-cursor = database.cursor(buffered=True)
+connect = conexion.conectar()
+database = connect[0]
+cursor = connect[1]
 
 class Usuario:
 
@@ -21,12 +17,35 @@ class Usuario:
 
     def registrar(self):
         fecha = datetime.datetime.now()
+        
+        #Cifrar contraseña
+        cifrado = hashlib.sha256()
+        cifrado.update(self.password.encode('utf8'))
+        
         sql = "INSERT INTO usuarios VALUES(null, %s, %s, %s, %s, %s)"
-        usuario = (self.nombre, self.apellidos, self.email, self.password, fecha)
-        cursor.execute(sql, usuario)
-        database.commit()
-
-        return [cursor.rowcount, self]
+        usuario = (self.nombre, self.apellidos, self.email, cifrado.hexdigest(), fecha)
+        
+        try:
+            cursor.execute(sql, usuario)
+            database.commit()
+            result = [cursor.rowcount, self]
+        except:
+            result=[0, self]
+        
+        return result
+        
 
     def identificar(self):
-        return self.nombre
+        #Consulta para comprobar si existe el usuario
+        sql = "select * FROM usuarios WHERE email = %s AND password = %s"
+        
+        #Cifrar contraseña
+        cifrado = hashlib.sha256()
+        cifrado.update(self.password.encode('utf8'))
+        #Datos para la consulta
+        usuario = (self.email, cifrado.hexdigest())
+
+        cursor.execute(sql, usuario)
+        result = cursor.fetchone()
+
+        return result
